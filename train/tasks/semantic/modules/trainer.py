@@ -48,7 +48,7 @@ class SoftmaxHeteroscedasticLoss(torch.nn.Module):
 
 
 def save_to_log(logdir, logfile, message):
-    f = open(logdir + '/' + logfile, "a")
+    f = open(os.path.join(logdir, logfile), "a")
     f.write(message + '\n')
     f.close()
     return
@@ -88,9 +88,17 @@ class Trainer():
                      "best_val_iou": 0}
 
         # get the data
-        parserModule = imp.load_source("parserModule",
-                                       booger.TRAIN_PATH + '/tasks/semantic/dataset/' +
-                                       self.DATA["name"] + '/parser.py')
+        parserModule = imp.load_source(
+            "parserModule",
+            os.path.join(
+                booger.TRAIN_PATH,
+                'tasks',
+                'semantic',
+                'dataset',
+                self.DATA["name"],
+                'parser.py'
+            )
+        )
         self.parser = parserModule.Parser(root=self.datadir,
                                           train_sequences=self.DATA["split"]["train"],
                                           valid_sequences=self.DATA["split"]["valid"],
@@ -126,7 +134,7 @@ class Trainer():
             else:
                 self.model = SalsaNextUncertainty(self.parser.get_n_classes())
 
-        self.tb_logger = Logger(self.log + "/tb")
+        self.tb_logger = Logger(os.path.join(self.log, "tb"))
 
         # GPU?
         self.gpu = False
@@ -176,7 +184,7 @@ class Trainer():
 
         if self.path is not None:
             torch.nn.Module.dump_patches = True
-            w_dict = torch.load(path + "/SalsaNext",
+            w_dict = torch.load(os.path.join(path, "SalsaNext"),
                                 map_location=lambda storage, loc: storage)
             self.model.load_state_dict(w_dict['state_dict'], strict=True)
             self.optimizer.load_state_dict(w_dict['optimizer'])
@@ -234,7 +242,10 @@ class Trainer():
                 logger.histo_summary(tag, value.data.cpu().numpy(), epoch)
                 if value.grad is not None:
                     logger.histo_summary(
-                        tag + '/grad', value.grad.data.cpu().numpy(), epoch)
+                        os.path.join(tag, 'grad'),
+                        value.grad.data.cpu().numpy(),
+                        epoch
+                    )
 
         if img_summary and len(imgs) > 0:
             directory = os.path.join(logdir, "predictions")

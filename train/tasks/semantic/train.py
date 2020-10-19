@@ -92,7 +92,7 @@ if __name__ == '__main__':
     )
 
     FLAGS, unparsed = parser.parse_known_args()
-    FLAGS.log = FLAGS.log + '/logs/' + datetime.datetime.now().strftime("%Y-%-m-%d-%H:%M") + FLAGS.name
+    FLAGS.log = os.path.join(FLAGS.log, 'logs', datetime.datetime.now().strftime("%Y-%-m-%d-%H:%M") + FLAGS.name)
     if FLAGS.uncertainty:
         params = SalsaNextUncertainty(20)
         pytorch_total_params = sum(p.numel() for p in params.parameters() if p.requires_grad)
@@ -165,8 +165,8 @@ if __name__ == '__main__':
     # easier). Also, standardize name to be able to open it later
     try:
         print("Copying files to %s for further reference." % FLAGS.log)
-        copyfile(FLAGS.arch_cfg, FLAGS.log + "/arch_cfg.yaml")
-        copyfile(FLAGS.data_cfg, FLAGS.log + "/data_cfg.yaml")
+        copyfile(FLAGS.arch_cfg, os.path.join(FLAGS.log, "arch_cfg.yaml"))
+        copyfile(FLAGS.data_cfg, os.path.join(FLAGS.log, "data_cfg.yaml"))
     except Exception as e:
         print(e)
         print("Error copying files, check permissions. Exiting...")
