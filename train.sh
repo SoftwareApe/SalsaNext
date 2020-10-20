@@ -10,6 +10,9 @@ helpFunction()
    exit 1
 }
 
+# Add path to train
+export TRAIN_PATH="$(pwd)/train"
+
 while getopts "d:a:l:n:c:p:u:" opt
 do
    case "$opt" in

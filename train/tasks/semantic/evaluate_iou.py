@@ -7,7 +7,6 @@ import yaml
 import sys
 import numpy as np
 import torch
-import __init__ as booger
 
 from tasks.semantic.modules.ioueval import iouEval
 from common.laserscan import SemLaserScan
@@ -15,7 +14,7 @@ from common.laserscan import SemLaserScan
 # possible splits
 splits = ['train','valid','test']
 def save_to_log(logdir,logfile,message):
-    f = open(logdir+'/'+logfile, "a")
+    f = open(os.path.join(logdir, logfile), "a")
     f.write(message+'\n')
     f.close()
     return
@@ -235,7 +234,3 @@ if __name__ == '__main__':
             eval((DATA["split"][splits]),splits,FLAGS.predictions)
     else:
         eval(DATA["split"][FLAGS.split],splits,FLAGS.predictions)
-
-
-
-

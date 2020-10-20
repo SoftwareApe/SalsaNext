@@ -8,7 +8,6 @@ import yaml
 from shutil import copyfile
 import os
 import shutil
-import __init__ as booger
 
 from tasks.semantic.modules.user import *
 def str2bool(v):
@@ -33,8 +32,11 @@ if __name__ == '__main__':
     parser.add_argument(
         '--log', '-l',
         type=str,
-        default=os.path.expanduser("~") + '/logs/' +
-                datetime.datetime.now().strftime("%Y-%-m-%d-%H:%M") + '/',
+        default=os.path.join(
+            os.path.expanduser("~"),
+            'logs',
+            datetime.datetime.now().strftime("%Y-%-m-%d-%H:%M")
+        ),
         help='Directory to put the predictions. Default: ~/logs/date+time'
     )
     parser.add_argument(
@@ -86,7 +88,7 @@ if __name__ == '__main__':
     # open arch config file
     try:
         print("Opening arch config file from %s" % FLAGS.model)
-        ARCH = yaml.safe_load(open(FLAGS.model + "/arch_cfg.yaml", 'r'))
+        ARCH = yaml.safe_load(open(os.path.join(FLAGS.model + "arch_cfg.yaml"), 'r'))
     except Exception as e:
         print(e)
         print("Error opening arch yaml file.")
@@ -95,7 +97,7 @@ if __name__ == '__main__':
     # open data config file
     try:
         print("Opening data config file from %s" % FLAGS.model)
-        DATA = yaml.safe_load(open(FLAGS.model + "/data_cfg.yaml", 'r'))
+        DATA = yaml.safe_load(open(os.path.join(FLAGS.model + "data_cfg.yaml"), 'r'))
     except Exception as e:
         print(e)
         print("Error opening data yaml file.")

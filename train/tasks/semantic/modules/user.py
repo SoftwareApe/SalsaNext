@@ -9,7 +9,6 @@ import imp
 import yaml
 import time
 from PIL import Image
-import __init__ as booger
 import collections
 import copy
 import cv2
@@ -34,9 +33,17 @@ class User():
     self.mc = mc
 
     # get the data
-    parserModule = imp.load_source("parserModule",
-                                   booger.TRAIN_PATH + '/tasks/semantic/dataset/' +
-                                   self.DATA["name"] + '/parser.py')
+    parserModule = imp.load_source(
+        "parserModule",
+        os.path.join(
+            os.environ['TRAIN_PATH'],
+            'tasks',
+            'semantic',
+            'dataset',
+            self.DATA["name"],
+            'parser.py'
+        )
+    )
     self.parser = parserModule.Parser(root=self.datadir,
                                       train_sequences=self.DATA["split"]["train"],
                                       valid_sequences=self.DATA["split"]["valid"],
@@ -58,13 +65,13 @@ class User():
         if self.uncertainty:
             self.model = SalsaNextUncertainty(self.parser.get_n_classes())
             self.model = nn.DataParallel(self.model)
-            w_dict = torch.load(modeldir + "/SalsaNext",
+            w_dict = torch.load(os.path.join(modeldir, "SalsaNext"),
                                 map_location=lambda storage, loc: storage)
             self.model.load_state_dict(w_dict['state_dict'], strict=True)
         else:
             self.model = SalsaNext(self.parser.get_n_classes())
             self.model = nn.DataParallel(self.model)
-            w_dict = torch.load(modeldir + "/SalsaNext",
+            w_dict = torch.load(os.path.join(modeldir, "SalsaNext"),
                                 map_location=lambda storage, loc: storage)
             self.model.load_state_dict(w_dict['state_dict'], strict=True)
 
