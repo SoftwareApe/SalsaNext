@@ -66,4 +66,4 @@ dependencies:
     - termcolor==1.1.0
     - torchvision==0.2.2.post3
     - werkzeug==0.16.0
-
+    - ./train

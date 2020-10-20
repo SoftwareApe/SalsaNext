@@ -91,10 +91,10 @@ class Trainer():
         parserModule = imp.load_source(
             "parserModule",
             os.path.join(
-                booger.TRAIN_PATH,
-                'tasks',
-                'semantic',
-                'dataset',
+                os.environ["TRAIN_PATH"],
+                "tasks",
+                "semantic",
+                "dataset",
                 self.DATA["name"],
                 'parser.py'
             )

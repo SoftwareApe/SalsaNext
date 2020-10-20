@@ -9,6 +9,9 @@ get_abs_filename() {
   echo "$(cd "$(dirname "$1")" && pwd)/$(basename "$1")"
 }
 
+# Add path to train
+export TRAIN_PATH="$(pwd)/train"
+
 while getopts "d:p:m:s:n:c:u:g" opt
 do
    case "$opt" in

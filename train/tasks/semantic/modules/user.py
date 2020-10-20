@@ -9,7 +9,6 @@ import imp
 import yaml
 import time
 from PIL import Image
-import __init__ as booger
 import collections
 import copy
 import cv2
@@ -37,7 +36,7 @@ class User():
     parserModule = imp.load_source(
         "parserModule",
         os.path.join(
-            booger.TRAIN_PATH,
+            os.environ['TRAIN_PATH'],
             'tasks',
             'semantic',
             'dataset',
