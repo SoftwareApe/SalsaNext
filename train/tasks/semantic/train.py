@@ -6,7 +6,6 @@ import datetime
 import os
 import shutil
 from shutil import copyfile
-import __init__ as booger
 import yaml
 from tasks.semantic.modules.trainer import *
 from pip._vendor.distlib.compat import raw_input
